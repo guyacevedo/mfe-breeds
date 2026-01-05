@@ -1,0 +1,10 @@
+{
+  "extends": "ts-config-single-spa",
+  "files": ["src/mfe-breeds-mfe-shared.ts"],
+  "compilerOptions": {
+    "declarationDir": "dist",
+    "skipLibCheck": true,
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*"]
+}
