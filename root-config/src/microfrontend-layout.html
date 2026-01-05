@@ -1,28 +1,27 @@
 <single-spa-router>
-  <!--
-
-    This is the single-spa Layout Definition for your microfrontends.
-    See https://single-spa.js.org/docs/layout-definition/ for more information.
-
-  -->
-
-  <!-- Example layouts you might find helpful:
-
-  <nav>
-    <application name="@org/navbar"></application>
-  </nav>
-  <route path="settings">
-    <application name="@org/settings"></application>
-  </route>
-
-  -->
-
   <main>
+    <nav>
+      <div>🐱 Cat Breed Explorer</div>
+      <div>
+        <a href="/"> 🐱 Breeds </a>
+        <a href="/auth"> 👤 Account </a>
+      </div>
+      <div>
+        <div class="navbar-status" id="navbar-status"></div>
+        <button class="navbar-logout" id="navbar-logout" style="display: none">
+          🚪 Logout
+        </button>
+        <div class="navbar-loading" id="navbar-loading" style="display: none">
+          <div class="spinner"></div>
+          <span>Loading...</span>
+        </div>
+      </div>
+    </nav>
     <route default>
-       <application name="@mfe-breeds/mfe-angular"></application>
+      <application name="@mfe-breeds/mfe-angular"></application>
     </route>
-    <route path="react">
-       <application name="@mfe-breeds/mfe-react"></application>
+    <route path="auth">
+      <application name="@mfe-breeds/mfe-react"></application>
     </route>
   </main>
 </single-spa-router>
