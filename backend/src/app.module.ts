@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { CatModule } from "@infrastructure/modules/cat.module";
 
 
 @Module({
@@ -8,6 +9,7 @@ import { ConfigModule } from "@nestjs/config";
       isGlobal: true,
       envFilePath: ".env",
     }),
+     CatModule,
   ],
 })
 export class AppModule {}
