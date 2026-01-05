@@ -1,0 +1,64 @@
+<div class="breed-dropdown-container">
+  <label for="breed-select">Select Cat Breed:</label>
+
+  <div class="dropdown-wrapper" [class.open]="isDropdownOpen">
+    <div class="dropdown-trigger" (click)="toggleDropdown()">
+      <input
+        type="text"
+        id="breed-select"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchInput()"
+        (focus)="isDropdownOpen = true"
+        placeholder="Search or select a breed..."
+        class="breed-input"
+      />
+      <div class="dropdown-arrow">▼</div>
+    </div>
+
+    <div class="dropdown-menu" *ngIf="isDropdownOpen">
+      <app-loading-spinner
+        [isLoading]="(loadingState$ | async)?.isLoading || false"
+        message="Loading breeds..."
+      ></app-loading-spinner>
+
+      <app-error-message
+        [error]="(loadingState$ | async)?.error || null"
+        (onRetry)="onRetry()"
+      ></app-error-message>
+
+      <div
+        class="breed-list"
+        *ngIf="
+          !(loadingState$ | async)?.isLoading && !(loadingState$ | async)?.error
+        "
+      >
+        <div
+          class="breed-item"
+          *ngFor="let breed of breeds$ | async"
+          [class.selected]="selectedBreed?.id === breed.id"
+          (click)="onBreedSelect(breed)"
+        >
+          <div class="breed-name">{{ breed.name }}</div>
+          <div class="breed-origin">{{ breed.origin }}</div>
+        </div>
+
+        <div
+          class="no-results"
+          *ngIf="(breeds$ | async)?.length === 0 && searchTerm"
+        >
+          No breeds found for "{{ searchTerm }}"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="selected-info" *ngIf="selectedBreed">
+    <p><strong>Selected:</strong> {{ selectedBreed.name }}</p>
+    <p>
+      <em
+        >{{ selectedBreed.description | slice : 0 : 100
+        }}{{ (selectedBreed.description.length || 0) > 100 ? "..." : "" }}</em
+      >
+    </p>
+  </div>
+</div>

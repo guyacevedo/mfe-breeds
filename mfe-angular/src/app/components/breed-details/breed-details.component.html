@@ -1,0 +1,107 @@
+<div class="breed-details" *ngIf="hasBreed">
+  <!-- Breed Information Section -->
+  <div class="breed-info-section">
+    <div class="breed-header">
+      <h2>{{ breed?.name || "Unknown Breed" }}</h2>
+      <span class="breed-origin">{{ breed?.origin || "Unknown Origin" }}</span>
+    </div>
+
+    <div class="breed-description">
+      <h3>About</h3>
+      <p>{{ breed?.description || "No description available" }}</p>
+    </div>
+
+    <div class="breed-temperament">
+      <h3>Temperament</h3>
+      <div class="temperament-tags">
+        <span
+          *ngFor="let temp of temperamentList; trackBy: i"
+          class="temperament-tag"
+        >
+          {{ temp }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Images Section -->
+  <div class="images-section">
+    <h3>{{ breed?.name || "Breed" }} Images</h3>
+
+    <!-- Carousel -->
+    <div class="carousel-container" *ngIf="hasImages">
+      <app-loading-spinner
+        [isLoading]="loadingImages"
+        message="Loading images..."
+      >
+      </app-loading-spinner>
+
+      <div class="carousel-wrapper" *ngIf="!loadingImages">
+        <div class="carousel-viewport">
+          <div class="carousel-images">
+            <img
+              *ngFor="let image of images; let i = index"
+              [src]="image"
+              [alt]="(breed?.name || 'Breed') + ' image ' + (i + 1)"
+              class="carousel-image"
+              [class.active]="i === 0"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- Carousel Navigation -->
+        <button class="carousel-nav prev" *ngIf="images.length > 1" disabled>
+          ‹
+        </button>
+        <button class="carousel-nav next" *ngIf="images.length > 1" disabled>
+          ›
+        </button>
+      </div>
+
+      <!-- Image Counter -->
+      <div class="image-counter" *ngIf="images.length > 1">
+        Image 1 of {{ images.length }}
+      </div>
+    </div>
+
+    <!-- No Images State -->
+    <div class="no-images" *ngIf="!hasImages && !loadingImages">
+      <p>No images available for this breed.</p>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section" *ngIf="searchEnabled">
+    <h3>Search Other Breeds</h3>
+    <div class="search-input-wrapper">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="onSearchInputChange()"
+        (keyup.enter)="onSearchSubmit()"
+        placeholder="Search by breed name, origin, or temperament..."
+        class="search-input"
+      />
+      <button
+        (click)="onSearchSubmit()"
+        [disabled]="!hasSearchQuery"
+        class="search-btn"
+      >
+        🔍 Search
+      </button>
+      <button *ngIf="hasSearchQuery" (click)="clearSearch()" class="clear-btn">
+        ✕ Clear
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- No Breed Selected State -->
+<div class="no-breed-selected" *ngIf="!hasBreed">
+  <div class="no-breed-content">
+    <div class="no-breed-icon">🐱</div>
+    <h3>No Breed Selected</h3>
+    <p>Please select a breed from the dropdown to view detailed information.</p>
+  </div>
+</div>
