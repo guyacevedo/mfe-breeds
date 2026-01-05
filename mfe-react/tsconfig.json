@@ -1,0 +1,15 @@
+{
+  "extends": "ts-config-single-spa",
+  "compilerOptions": {
+    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "jsx": "react-jsx",
+    "declarationDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "@mfe-breeds/mfe-shared": ["../mfe-shared/src/mfe-breeds-mfe-shared.ts"]
+    }
+  },
+  "files": ["src/mfe-breeds-mfe-react.tsx"],
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*"]
+}
