@@ -1,0 +1,62 @@
+<div class="breed-carousel" *ngIf="breed && hasImages">
+  <div class="carousel-container">
+    <div class="carousel-header">
+      <h3>{{ breed.name }} Images</h3>
+      <span class="image-counter">{{ imageCounter }}</span>
+    </div>
+
+    <div class="carousel-viewport">
+      <div
+        class="carousel-track"
+        [style.transform]="'translateX(-' + currentImageIndex * 100 + '%)'"
+      >
+        <img
+          *ngFor="let image of images; let i = index"
+          [src]="image"
+          [alt]="breed.name + ' cat image ' + (i + 1)"
+          class="carousel-image"
+          [class.active]="i === currentImageIndex"
+          (click)="goToImage(i)"
+          [style.backgroundImage]="'url(' + image + ')'"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <button
+      class="carousel-btn prev-btn"
+      (click)="previousImage()"
+      [disabled]="images.length <= 1"
+    >
+      ‹
+    </button>
+
+    <button
+      class="carousel-btn next-btn"
+      (click)="nextImage()"
+      [disabled]="images.length <= 1"
+    >
+      ›
+    </button>
+  </div>
+
+  <!-- Thumbnail Navigation -->
+  <div class="thumbnail-navigation" *ngIf="images.length > 1">
+    <div class="thumbnail-track">
+      <button
+        *ngFor="let image of images; let i = index"
+        class="thumbnail-btn"
+        [class.active]="i === currentImageIndex"
+        (click)="goToImage(i)"
+        [style.backgroundImage]="'url(' + image + ')'"
+        [title]="'Image ' + (i + 1)"
+      ></button>
+    </div>
+  </div>
+
+  <!-- No Images State -->
+  <div class="no-images" *ngIf="!hasImages">
+    <p>No images available for this breed</p>
+  </div>
+</div>

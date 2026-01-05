@@ -1,12 +1,12 @@
 <single-spa-router>
   <main>
-    <nav>
-      <div>🐱 Cat Breed Explorer</div>
-      <div>
-        <a href="/"> 🐱 Breeds </a>
-        <a href="/auth"> 👤 Account </a>
+    <nav class="navbar">
+      <div class="navbar-brand">🐱 Cat Breed Explorer</div>
+      <div class="navbar-links">
+          <a class="nav-link" href="/"> 🏠 Home </a>
+        <a class="nav-link"  href="/auth"> 👤 Account </a>
       </div>
-      <div>
+      <div class="navbar-actions">
         <div class="navbar-status" id="navbar-status"></div>
         <button class="navbar-logout" id="navbar-logout" style="display: none">
           🚪 Logout
@@ -24,4 +24,164 @@
       <application name="@mfe-breeds/mfe-react"></application>
     </route>
   </main>
+  <style>
+  .navbar {
+    background: linear-gradient(135deg, #22375b 0%, #4771c5 100%);
+    padding: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .navbar-brand {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .navbar-links {
+    display: flex;
+    gap: .25rem;
+    align-items: center;
+    flex-grow: 1;
+    margin-block: 8px;
+  }
+
+  .navbar-links .nav-link {
+    color: white;
+    margin: 0;
+    text-decoration: none;
+    font-family: sans-serif;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    border: 2px solid transparent;
+  }
+
+  .navbar-links .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar-links .nav-link:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .navbar-status {
+    color: #10b981;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid #10b981;
+    font-weight: 500;
+  }
+
+  .navbar-logout {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-logout:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+  }
+
+  .navbar-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffd700;
+    font-size: 0.875rem;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .navbar-loading .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffd700;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  main {
+    background: linear-gradient(135deg, #f7fafc 0%, #e9ecef 100%);
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .navbar-brand {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+
+    .navbar-links {
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .navbar-links .nav-link {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .navbar-actions {
+      justify-content: center;
+    }
+  }
+</style>
 </single-spa-router>
+

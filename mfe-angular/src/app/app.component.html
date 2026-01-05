@@ -1,2 +1,57 @@
-@mfe-breeds/mfe-angular is starting
-<router-outlet></router-outlet>
+<div class="app-container">
+  <header>
+    <h1>🐱 Cat Breed Explorer</h1>
+    <p *ngIf="!isBreedListRoute && !isBreedDetailsRoute && !showBreedTable">
+      Choose your favorite cat breed from our comprehensive database
+    </p>
+  </header>
+
+  <main>
+    <!-- Vista 1: Breed Dropdown -->
+    <section class="breed-section" *ngIf="isBreedListRoute">
+      <app-breed-dropdown></app-breed-dropdown>
+    </section>
+
+    <!-- Vista 2: Breed Details con ID -->
+    <section class="breed-details-section" *ngIf="isBreedDetailsRoute">
+      <app-breed-details></app-breed-details>
+    </section>
+
+    <!-- Vista 2: Breed Table -->
+    <section class="breed-table-section" *ngIf="showBreedTable">
+      <app-breed-table></app-breed-table>
+    </section>
+
+    <!-- Default Welcome - solo cuando no hay otras vistas -->
+    <section
+      class="default-section"
+      *ngIf="!isBreedListRoute && !isBreedDetailsRoute && !showBreedTable"
+    >
+      <div class="welcome-content">
+        <h2>Welcome to Cat Breed Explorer</h2>
+        <div class="feature-cards">
+          <div
+            class="feature-card clickable"
+            (click)="navigateToBreeds('select')"
+          >
+            <h3>🐱 Browse Breeds</h3>
+            <p>
+              Explore our comprehensive database of cat breeds with detailed
+              information.
+            </p>
+          </div>
+          <div
+            class="feature-card clickable"
+            (click)="navigateToBreeds('table')"
+          >
+            <h3>🔍 Search & Filter</h3>
+            <p>
+              Find your perfect cat companion with our advanced search
+              capabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
