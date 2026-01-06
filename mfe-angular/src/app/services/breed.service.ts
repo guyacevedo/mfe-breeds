@@ -17,11 +17,9 @@ export class BreedService {
   });
 
   constructor() {
-    console.log('BreedService constructor');
     // Subscribe to shared service with proper subscription management
     const breedsSubscription = breedService.getBreeds$().subscribe({
       next: (breeds) => {
-        console.log('BreedService received breeds:', breeds);
         this.breeds$.next(breeds);
       },
       error: (error) => console.error('Error in breeds subscription:', error),
@@ -43,11 +41,9 @@ export class BreedService {
   }
 
   loadBreeds(limit: number = 10, page: number = 0): Observable<Breed[]> {
-    console.log('BreedService.loadBreeds called with:', limit, page);
     return new Observable((observer) => {
       breedService.getBreeds(limit, page).subscribe({
         next: (breeds) => {
-          console.log('BreedService received breeds from catService:', breeds);
           observer.next(breeds);
         },
         error: (error) => {
@@ -55,7 +51,6 @@ export class BreedService {
           observer.error(error);
         },
         complete: () => {
-          console.log('BreedService loadBreeds complete');
           observer.complete();
         },
       });
@@ -79,11 +74,9 @@ export class BreedService {
   }
 
   searchBreeds(query: string): Observable<Breed[]> {
-    console.log('BreedService.searchBreeds called with:', query);
     return new Observable((observer) => {
       breedService.searchBreeds(query).subscribe({
         next: (breeds) => {
-          console.log('BreedService search results:', breeds);
           observer.next(breeds);
         },
         error: (error) => {
@@ -91,7 +84,6 @@ export class BreedService {
           observer.error(error);
         },
         complete: () => {
-          console.log('BreedService search complete');
           observer.complete();
         },
       });

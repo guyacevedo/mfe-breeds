@@ -20,13 +20,11 @@ export class BreedDropdownComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private breedService: BreedService) {
-    console.log('BreedDropdownComponent constructor');
     this.breeds$ = this.breedService.breeds;
     this.loadingState$ = this.breedService.loadingState;
   }
 
   ngOnInit(): void {
-    console.log('BreedDropdownComponent ngOnInit');
     // Load breeds on component init
     this.loadBreeds();
 
@@ -35,7 +33,6 @@ export class BreedDropdownComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((breed) => {
         this.selectedBreed = breed;
-        console.log('Selected breed updated:', breed);
       });
   }
 
@@ -45,19 +42,16 @@ export class BreedDropdownComponent implements OnInit, OnDestroy {
   }
 
   onSearchInput(): void {
-    console.log('onSearchInput called with:', this.searchTerm);
     if (this.searchTerm.trim()) {
-      console.log('Searching for:', this.searchTerm);
       this.breedService
         .searchBreeds(this.searchTerm)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (results) => console.log('Search results:', results),
           error: (error) => console.error('Search error:', error),
-          complete: () => console.log('Search complete')
+          complete: () => console.log('Search complete'),
         });
     } else {
-      console.log('Search term empty, loading all breeds');
       this.loadBreeds();
     }
   }
@@ -77,14 +71,13 @@ export class BreedDropdownComponent implements OnInit, OnDestroy {
   }
 
   private loadBreeds(): void {
-    console.log('BreedDropdownComponent loadBreeds called');
     this.breedService
       .loadBreeds(50, 0) // Load more for better dropdown experience
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (breeds) => console.log('Breeds loaded:', breeds),
         error: (error) => console.error('Error loading breeds:', error),
-        complete: () => console.log('Breeds loading complete')
+        complete: () => console.log('Breeds loading complete'),
       });
   }
 }

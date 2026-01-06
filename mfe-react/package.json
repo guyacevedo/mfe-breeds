@@ -3,8 +3,9 @@
   "scripts": {
     "start": "webpack serve",
     "start:standalone": "webpack serve --env standalone",
-    "build": "concurrently npm:build:*",
+    "build": "npm run build:webpack",
     "build:webpack": "webpack --mode=production",
+    "build:types": "tsc",
     "analyze": "webpack --mode=production --env analyze",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
@@ -12,8 +13,7 @@
     "test": "cross-env BABEL_ENV=test jest",
     "watch-tests": "cross-env BABEL_ENV=test jest --watch",
     "prepare": "husky install",
-    "coverage": "cross-env BABEL_ENV=test jest --coverage",
-    "build:types": "tsc"
+    "coverage": "cross-env BABEL_ENV=test jest --coverage"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",

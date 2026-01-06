@@ -4,6 +4,7 @@
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "jsx": "react-jsx",
     "declarationDir": "dist",
+    "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
       "@mfe-breeds/mfe-shared": ["../mfe-shared/src/mfe-breeds-mfe-shared.ts"]

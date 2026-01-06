@@ -33,9 +33,7 @@ export class BreedDetailsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  ngOnInit(): void {
-    console.log('BreedDetailsComponent initialized with breed:', this.breed);
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -5,28 +5,28 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = '@app/mfe-angular';
   currentRoute: string = '/';
 
-  constructor(private router: Router) {
-    console.log('AppComponent constructor initialized, currentRoute:', this.currentRoute);
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     // Get initial route
     this.currentRoute = this.router.url;
-    console.log('ngOnInit - initial route from router:', this.currentRoute);
 
     // Listen to route changes
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.currentRoute = event.urlAfterRedirects;
-      console.log('Route changed to:', this.currentRoute);
-    });
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.currentRoute = event.urlAfterRedirects;
+      });
   }
 
   ngOnDestroy(): void {
@@ -38,7 +38,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   get isBreedDetailsRoute(): boolean {
-    return this.currentRoute.startsWith('/breeds/') && this.currentRoute !== '/breeds';
+    return (
+      this.currentRoute.startsWith('/breeds/') &&
+      this.currentRoute !== '/breeds'
+    );
   }
 
   get showBreedTable(): boolean {
@@ -47,7 +50,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   navigateToBreeds(view: string): void {
     // Usar el router de Angular para navegación interna
-   this.currentRoute = view === 'select' ? '/breeds' : '/table';
-
+    this.currentRoute = view === 'select' ? '/breeds' : '/table';
   }
 }
