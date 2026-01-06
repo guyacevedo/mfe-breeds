@@ -8,7 +8,7 @@
     "check-format": "prettier --check .",
     "prepare": "husky install",
     "build": "concurrently npm:build:*",
-    "build:webpack": "webpack --mode=production"
+    "build:webpack": "webpack --mode=production --env isLocal"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",

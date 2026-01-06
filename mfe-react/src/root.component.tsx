@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-import { useAuth } from './hooks/useAuth';
-import { LoginForm } from './components/LoginForm/LoginForm';
-import { RegisterForm } from './components/RegisterForm/RegisterForm';
-import {
-  AppContainer,
-  Header,
-  MainContent,
-  AuthCard
-} from './root.styles';
+import React, { useState } from "react";
+import { useAuth } from "./hooks/useAuth";
+import { LoginForm } from "./components/LoginForm/LoginForm";
+import { RegisterForm } from "./components/RegisterForm/RegisterForm";
+import { AppContainer, Header, MainContent, AuthCard } from "./root.styles";
 
 export interface RootProps {
   name: string;
@@ -18,24 +13,26 @@ export default function Root(props: RootProps) {
   const [isLoginMode, setIsLoginMode] = useState(true);
 
   const handleAuthSuccess = () => {
-    console.log('Auth success callback triggered');
-    console.log('Current auth state:', { isAuthenticated, user });
-    console.log('Should redirect to dashboard:', isAuthenticated && user);
+    console.log("Auth success callback triggered");
   };
-
-
 
   if (isAuthenticated && user) {
     return (
-      <div style={{padding: '20px'}}>
+      <div style={{ padding: "20px" }}>
         <h1>DASHBOARD - LOGIN SUCCESSFUL!</h1>
         <p>Welcome, {user.name}!</p>
         <p>Email: {user.email}</p>
-        <p>This is the protected dashboard. Use the logout button in the top navbar.</p>
+        <p>
+          This is the protected dashboard. Use the logout button in the top
+          navbar.
+        </p>
       </div>
     );
   } else {
-    console.log('Rendering login form - auth check failed:', { isAuthenticated, user });
+    console.log("Rendering login form - auth check failed:", {
+      isAuthenticated,
+      user,
+    });
   }
 
   return (
