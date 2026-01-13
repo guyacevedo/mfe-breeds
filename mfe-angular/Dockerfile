@@ -6,6 +6,9 @@ WORKDIR /app
 COPY mfe-angular/package*.json ./mfe-angular/
 COPY mfe-shared/package*.json ./mfe-shared/
 
+WORKDIR /app/mfe-shared
+RUN npm install
+
 WORKDIR /app/mfe-angular
 RUN npm install
 
