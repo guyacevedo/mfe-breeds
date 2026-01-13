@@ -3,70 +3,7 @@ import { Breed } from '@mfe-breeds/mfe-shared';
 
 @Component({
   selector: 'app-breed-table',
-  template: `
-    <div class="breed-table-container">
-      <div class="search-section">
-        <input
-          type="text"
-          [(ngModel)]="searchTerm"
-          (keyup.enter)="onSearchSubmit()"
-          placeholder="Search breeds by name or origin..."
-          class="search-input"
-        />
-        <button (click)="onSearchSubmit()" class="search-btn">Search</button>
-        <button *ngIf="searchTerm" (click)="clearSearch()" class="clear-btn">
-          Clear
-        </button>
-      </div>
-
-      <div class="table-wrapper" *ngIf="!isLoading">
-        <table class="breed-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Origin</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let breed of filteredBreeds; trackBy: trackByBreedId"
-              (click)="onSelectBreed(breed)"
-            >
-              <td>
-                <strong>{{ breed.name }}</strong>
-              </td>
-              <td>{{ breed.origin }}</td>
-              <td>
-                <button class="select-btn" (click)="onSelectBreed(breed)">
-                  Select
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div
-        class="no-results"
-        *ngIf="!isLoading && filteredBreeds.length === 0 && searchTerm"
-      >
-        <h3>No results found</h3>
-        <p>No breeds match your search for "{{ searchTerm }}".</p>
-        <button (click)="clearSearch()" class="clear-search-btn">
-          Clear Search
-        </button>
-      </div>
-
-      <div
-        class="empty-state"
-        *ngIf="!isLoading && filteredBreeds.length === 0 && !searchTerm"
-      >
-        <h3>No breeds available</h3>
-        <p>Start by loading breeds or using search.</p>
-      </div>
-    </div>
-  `,
+  templateUrl: './breed-table.component.html',
   styleUrls: ['./breed-table.component.scss'],
 })
 export class BreedTableComponent {
@@ -74,8 +11,12 @@ export class BreedTableComponent {
   @Input() searchTerm: string = '';
   @Input() isLoading: boolean = false;
 
+  @Input() currentPage: number = 1;
+  @Input() pageSize: number = 5;
+
   @Output() breedSelected = new EventEmitter<Breed>();
   @Output() searchRequested = new EventEmitter<string>();
+  @Output() pageChanged = new EventEmitter<{ page: number; size: number }>();
 
   get filteredBreeds(): Breed[] {
     if (!this.searchTerm.trim()) {
@@ -94,16 +35,31 @@ export class BreedTableComponent {
     this.breedSelected.emit(breed);
   }
 
+  trackByBreedId(index: number, breed: Breed): string {
+    return breed.id;
+  }
+
+  // Al no saber el total, solo podemos validar que no baje de 1.
+  // La validación de "siguiente" la hará el padre o la longitud del array actual.
+  onPageChange(direction: number): void {
+    const nextPage = this.currentPage + direction;
+    if (nextPage >= 1) {
+      this.pageChanged.emit({
+        page: nextPage,
+        size: this.pageSize,
+      });
+    }
+  }
+
+  // Si la búsqueda cambia, notificamos al padre para resetear a página 1
   onSearchSubmit(): void {
+    this.pageChanged.emit({ page: 1, size: this.pageSize });
     this.searchRequested.emit(this.searchTerm);
   }
 
   clearSearch(): void {
     this.searchTerm = '';
+    this.pageChanged.emit({ page: 1, size: this.pageSize });
     this.searchRequested.emit('');
-  }
-
-  trackByBreedId(index: number, breed: Breed): string {
-    return breed.id;
   }
 }

@@ -1,116 +1,75 @@
 <div class="breed-table-container">
-  <!-- Search Bar -->
   <div class="search-section">
-    <div class="search-input-wrapper">
-      <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        (input)="onSearchChange($event)"
-        (keyup.enter)="onSearchSubmit()"
-        placeholder="Search breeds by name, origin, temperament, or description..."
-        class="search-input"
-      />
-      <button
-        (click)="onSearchSubmit()"
-        class="search-btn"
-        [disabled]="isLoading || !searchTerm.trim()"
-      >
-        <span class="search-icon">🔍</span>
-        Search
-      </button>
-      <button *ngIf="searchTerm" (click)="clearSearch()" class="clear-btn">
-        ✕
-      </button>
-    </div>
-    <div class="results-info" *ngIf="searchTerm">
-      Found {{ resultsCount }} breed{{ resultsCount !== 1 ? "s" : "" }}
-    </div>
-  </div>
-
-  <!-- Loading State -->
-  <div class="loading-state" *ngIf="isLoading">
-    <app-loading-spinner
-      [isLoading]="true"
-      message="Searching breeds..."
-    ></app-loading-spinner>
-  </div>
-
-  <!-- Table Content -->
-  <div class="table-wrapper" *ngIf="!isLoading && hasBreeds">
-    <table class="breed-table">
-      <thead>
-        <tr>
-          <th>Breed Name</th>
-          <th>Origin</th>
-          <th>Temperament</th>
-          <th>Description</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let breed of filteredBreeds; trackBy: trackByBreedId"
-          [class.selected]="breed === (breedSelected | async)"
-          (click)="onSelectBreed(breed)"
-        >
-          <td class="breed-name">
-            <strong>{{ breed.name }}</strong>
-          </td>
-          <td class="breed-origin">
-            <span class="origin-badge">{{ breed.origin }}</span>
-          </td>
-          <td class="breed-temperament">
-            <span class="temperament-tags">
-              <span
-                *ngFor="
-                  let temp of breed.temperament?.split(', ');
-                  trackBy: trackByTemperament
-                "
-                class="temp-tag"
-              >
-                {{ temp.trim() }}
-              </span>
-            </span>
-          </td>
-          <td class="breed-description">
-            <span
-              [innerHTML]="
-                (breed.description || '').substring(0, 100) +
-                ((breed.description?.length || 0) > 100 ? '...' : '')
-              "
-            ></span>
-          </td>
-          <td class="breed-actions">
-            <button
-              class="select-btn"
-              (click)="onSelectBreed(breed)"
-              title="Select this breed"
-            >
-              Select
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- No Results State -->
-  <div class="no-results" *ngIf="!isLoading && !hasBreeds && searchTerm">
-    <div class="no-results-icon">🔍</div>
-    <h3>No breeds found</h3>
-    <p>No breeds match your search for "{{ searchTerm }}".</p>
-    <button (click)="clearSearch()" class="clear-search-btn">
-      Clear Search
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearchSubmit()"
+      placeholder="Search breeds by name or origin..."
+      class="search-input"
+    />
+    <button (click)="onSearchSubmit()" class="search-btn">Search</button>
+    <button *ngIf="searchTerm" (click)="clearSearch()" class="clear-btn">
+      Clear
     </button>
   </div>
 
-  <!-- Empty State -->
-  <div class="empty-state" *ngIf="!isLoading && !hasBreeds && !searchTerm">
-    <div class="empty-icon">🐱</div>
+  <div class="table-wrapper" *ngIf="!isLoading && breeds.length > 0">
+    <table class="breed-table">
+      <tr
+        *ngFor="let breed of filteredBreeds; trackBy: trackByBreedId"
+        (click)="onSelectBreed(breed)"
+      >
+        <td>
+          <strong>{{ breed.name }}</strong>
+        </td>
+        <td>{{ breed.origin }}</td>
+        <td>
+          <button class="select-btn" (click)="onSelectBreed(breed)">
+            Select
+          </button>
+        </td>
+      </tr>
+    </table>
+
+    <div class="pagination-container">
+      <div class="pagination-info">
+        Página actual: <strong>{{ currentPage }}</strong>
+      </div>
+
+      <div class="pagination-controls">
+        <button
+          class="page-btn"
+          [disabled]="currentPage === 1"
+          (click)="onPageChange(-1)"
+        >
+          &laquo; Previous
+        </button>
+
+        <button
+          class="page-btn"
+          [disabled]="breeds.length < pageSize"
+          (click)="onPageChange(1)"
+        >
+          Next &raquo;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="no-results"
+    *ngIf="!isLoading && breeds.length === 0 && currentPage > 1"
+  >
+    <h3>No more breeds found</h3>
+    <p>You've reached the end of the list.</p>
+    <button (click)="onPageChange(-1)" class="clear-search-btn">Go Back</button>
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="!isLoading && filteredBreeds.length === 0 && !searchTerm"
+  >
     <h3>No breeds available</h3>
-    <p>
-      Start by selecting a breed from the dropdown or use the search to find
-      your favorite cat breed.
-    </p>
+    <p>Start by loading breeds or using search.</p>
   </div>
 </div>
