@@ -6,6 +6,9 @@ WORKDIR /app
 COPY mfe-react/package*.json ./mfe-react/
 COPY mfe-shared/package*.json ./mfe-shared/
 
+WORKDIR /app/mfe-shared
+RUN npm install
+
 WORKDIR /app/mfe-react
 RUN npm install
 
