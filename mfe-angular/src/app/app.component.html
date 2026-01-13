@@ -1,6 +1,6 @@
 <div class="app-container">
   <header>
-    <h1>🐱 Cat Breed Explorer</h1>
+    <h1>{{ title }}</h1>
     <p *ngIf="!isBreedListRoute && !isBreedDetailsRoute && !showBreedTable">
       Choose your favorite cat breed from our comprehensive database
     </p>
@@ -19,7 +19,14 @@
 
     <!-- Vista 2: Breed Table -->
     <section class="breed-table-section" *ngIf="showBreedTable">
-      <app-breed-table></app-breed-table>
+      <app-breed-table
+        [breeds]="breeds"
+        [isLoading]="isLoading"
+        [currentPage]="params.page"
+        [pageSize]="params.limit"
+        (pageChanged)="handlePageUpdate($event)"
+        (searchRequested)="handleSearch($event)"
+      ></app-breed-table>
     </section>
 
     <!-- Default Welcome - solo cuando no hay otras vistas -->
